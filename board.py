@@ -10,29 +10,28 @@ class Board:
 
     def new_board(self, board=None):
         """
-        Create a new board matrix
+        Create a new board matrix.
         """
-        matrix = [[Square()] * 8 for i in range(8)]
 
+        # initialize squares and place them in matrix
+
+        matrix = [[None] * 8 for i in range(8)]
+
+        # The following code block has been adapted from
+        # http://itgirl.dreamhosters.com/itgirlgames/games/Program%20Leaders/ClareR/Checkers/checkers.py
         for x in range(8):
             for y in range(8):
                 if (x % 2 != 0) and (y % 2 == 0):
-                    matrix[y][x].color = WHITE
+                    matrix[y][x] = Square(WHITE)
                 elif (x % 2 != 0) and (y % 2 != 0):
-                    matrix[y][x].color = BLACK
+                    matrix[y][x] = Square(BLACK)
                 elif (x % 2 == 0) and (y % 2 != 0):
-                    matrix[y][x].color = WHITE
+                    matrix[y][x] = Square(WHITE)
                 elif (x % 2 == 0) and (y % 2 == 0):
-                    matrix[y][x].color = BLACK
-
-                if board:
-                    if board[y][x] == 'B':
-                        matrix[y][x].occupant = Piece(BLUE)
-                    elif board[y][x] == 'R':
-                        matrix[y][x].occupant = Piece(RED)
+                    matrix[y][x] = Square(BLACK)
 
         # initialize the pieces and put them in the appropriate squares
-        if not board:
+        if board == None:
             for x in range(8):
                 for y in range(3):
                     if matrix[x][y].color == BLACK:
@@ -40,6 +39,13 @@ class Board:
                 for y in range(5, 8):
                     if matrix[x][y].color == BLACK:
                         matrix[x][y].occupant = Piece(BLUE)
+        else:
+            for x in range(8):
+                for y in range(8):
+                    if board[x][y] == 'B':
+                        matrix[x][y].occupant = Piece(BLUE)
+                    elif board[x][y] == 'R':
+                        matrix[x][y].occupant = Piece(RED)
 
         return matrix
 
