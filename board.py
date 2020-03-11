@@ -22,13 +22,13 @@ class Board:
         for x in range(8):
             for y in range(8):
                 if (x % 2 != 0) and (y % 2 == 0):
-                    matrix[y][x] = Square(WHITE)
+                    matrix[y][x] = Square(BLACK)
                 elif (x % 2 != 0) and (y % 2 != 0):
-                    matrix[y][x] = Square(BLACK)
-                elif (x % 2 == 0) and (y % 2 != 0):
                     matrix[y][x] = Square(WHITE)
-                elif (x % 2 == 0) and (y % 2 == 0):
+                elif (x % 2 == 0) and (y % 2 != 0):
                     matrix[y][x] = Square(BLACK)
+                elif (x % 2 == 0) and (y % 2 == 0):
+                    matrix[y][x] = Square(WHITE)
 
         # initialize the pieces and put them in the appropriate squares
         if board == None:
