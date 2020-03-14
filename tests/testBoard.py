@@ -1,6 +1,8 @@
 import unittest
 from config import *
 from board import Board, Square
+from copy import deepcopy
+import collections
 
 class MyTestCase(unittest.TestCase):
     def setUp(self):
@@ -70,6 +72,10 @@ class MyTestCase(unittest.TestCase):
                         assert self.new_board.blind_legal_moves(x,y) == [self.new_board.rel(SOUTHWEST, x, y), self.new_board.rel(SOUTHEAST, x, y)]
                 else:
                     assert self.new_board.blind_legal_moves(x, y) == []
+
+    def test_copy(self):
+        copy_board = deepcopy(self.new_board)
+        copy_board.matrix == self.new_board.matrix
 
     def test_rel(self):
         for i in range(8):
