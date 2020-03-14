@@ -196,17 +196,16 @@ class Board:
 
         if hop == False:
             for move in blind_legal_moves:
-                if hop == False:
-                    if self.on_board(move[0], move[1]):
-                        if self.location(move[0], move[1]).occupant == None:
-                            legal_moves.append(move)
+                if self.on_board(move[0], move[1]):
+                    if self.location(move[0], move[1]).occupant == None:
+                        legal_moves.append(move)
 
-                        elif self.location(move[0], move[1]).occupant.color != self.location(x,
+                    elif self.location(move[0], move[1]).occupant.color != self.location(x,
                                                                                              y).occupant.color and self.on_board(
-                            move[0] + (move[0] - x), move[1] + (move[1] - y)) and self.location(
-                            move[0] + (move[0] - x),
-                            move[1] + (move[1] - y)).occupant == None:  # is this location filled by an enemy piece?
-                            legal_moves.append((move[0] + (move[0] - x), move[1] + (move[1] - y)))
+                        move[0] + (move[0] - x), move[1] + (move[1] - y)) and self.location(
+                        move[0] + (move[0] - x),
+                        move[1] + (move[1] - y)).occupant == None:  # is this location filled by an enemy piece?
+                        legal_moves.append((move[0] + (move[0] - x), move[1] + (move[1] - y)))
 
         else:  # hop == True
             for move in blind_legal_moves:
