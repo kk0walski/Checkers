@@ -52,6 +52,25 @@ class MyTestCase(unittest.TestCase):
             for j in range(8):
                 assert temp_matrix[i][j] == self.new_board.location(i,j)
 
+    def test_adjacent(self):
+        for i in range(8):
+            for j in range(8):
+                self.new_board.adjacent(i,j) == [self.new_board.rel(NORTHWEST, i, j),
+                                                 self.new_board.rel(NORTHEAST, i, j),
+                                                 self.new_board.rel(SOUTHWEST, i, j),
+                                                 self.new_board.rel(SOUTHEAST, i, j)]
+
+    def test_blind_legal_moves(self):
+        for x in range(8):
+            for y in range(8):
+                if self.new_board.matrix[x][y].occupant != None:
+                    if self.new_board.matrix[x][y].occupant.color  == BLUE:
+                        assert self.new_board.blind_legal_moves(x,y) == [self.new_board.rel(NORTHWEST, x, y), self.new_board.rel(NORTHEAST, x, y)]
+                    if self.new_board.matrix[x][y].occupant.color  == RED:
+                        assert self.new_board.blind_legal_moves(x,y) == [self.new_board.rel(SOUTHWEST, x, y), self.new_board.rel(SOUTHEAST, x, y)]
+                else:
+                    assert self.new_board.blind_legal_moves(x, y) == []
+
     def test_rel(self):
         for i in range(8):
             for j in range(8):
