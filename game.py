@@ -136,9 +136,9 @@ class Game:
         """
         for x in range(8):
             for y in range(8):
-                if self.board.location(x, y).color == BLACK and self.board.location(x,
-                                                                                    y).occupant != None and self.board.location(
-                    x, y).occupant.color == self.turn:
+                if self.board.location(x, y).color == BLACK and \
+                        self.board.location(x,y).occupant != None and \
+                        self.board.location(x, y).occupant.color == self.turn:
                     if self.board.legal_moves(x, y) != []:
                         return False
 

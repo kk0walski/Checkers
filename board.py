@@ -42,10 +42,12 @@ class Board:
         else:
             for x in range(8):
                 for y in range(8):
-                    if board[x][y] == 'B':
+                    if board[x][y] == 'B' or board[x][y] == 'B:':
                         matrix[x][y].occupant = Piece(BLUE)
-                    elif board[x][y] == 'R':
+                    elif board[x][y] == 'R' or board[x][y] == 'R:':
                         matrix[x][y].occupant = Piece(RED)
+                    if board[x][y][-1] == ':':
+                        matrix[x][y].occupant.crown()
 
         return matrix
 
@@ -55,24 +57,17 @@ class Board:
         for j in range(8):
             for i in range(8):
                 if self.matrix[i][j].occupant is not None:
-                    if self.matrix[i][j].occupant.color == BLUE:
-                        temp_matrix[i][j] = 'B'
-                    else:
-                        temp_matrix[i][j] = 'R'
+                    temp_matrix[i][j] = self.matrix[i][j].occupant.__repr__()
 
         return temp_matrix
 
     def __str__(self):
+        reasult = ""
         for j in range(8):
             for i in range(8):
-                if self.matrix[i][j].occupant is not None:
-                    if self.matrix[i][j].occupant.color == BLUE:
-                        print('B', end=" ")
-                    else:
-                        print('R', end=" ")
-                else:
-                    print('X', end=" ")
-            print('')
+                reasult += str(self.matrix[i][j])
+            reasult += '\n'
+        return reasult
 
     def remove_piece(self, x, y):
         """
@@ -172,7 +167,6 @@ class Board:
 		Returns a list of blind legal move locations from a set of coordinates (x,y) on the board.
 		If that location is empty, then blind_legal_moves() return an empty list.
 		"""
-        # print(x)
         if self.matrix[x][y].occupant != None:
 
             if self.matrix[x][y].occupant.king == False and self.matrix[x][y].occupant.color == BLUE:
@@ -237,8 +231,34 @@ class Piece:
         self.king = True
         self.value = 2
 
+    def __repr__(self):
+        piece = 'B' if self.color == BLUE else 'R'
+        if self.king:
+            piece += ':'
+        return piece
+
+    def __str__(self):
+        piece = ' B' if self.color == BLUE else ' R'
+        if self.king:
+            piece += ': '
+        else:
+            piece += ' '
+        return piece
+
 
 class Square:
     def __init__(self, color=WHITE, occupant=None):
         self.color = color  # color is either BLACK or WHITE
         self.occupant = occupant  # occupant is a Square object
+
+    def __repr__(self):
+        if self.occupant:
+            return self.occupant.__repr__()
+        else:
+            return 'X'
+
+    def __str__(self):
+        if self.occupant:
+            return str(self.occupant)
+        else:
+            return ' X '
