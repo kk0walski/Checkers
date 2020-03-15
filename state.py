@@ -3,13 +3,15 @@ from config import BLUE, RED, BLACK
 from copy import deepcopy
 
 class State:
-    def __init__(self, board=None, turn=BLUE, hop=False):
+    def __init__(self, board=None, turn=BLUE, hop=False, loop_mode=False, endit=False):
         if board:
             self.board = deepcopy(board)
         else:
             self.board = Board()
         self.turn = turn
         self.hop = hop
+        self.loop_mode = loop_mode
+        self.endit = endit
 
     def getPossibleActions(self):
         possible_moves = []
@@ -51,14 +53,13 @@ class State:
             self.turn = BLUE
 
         self.hop = False
-
         if self.isTerminal():
             if self.turn == BLUE:
                 print('RED WINS!')
             else:
                 print('BLUE WINS!')
-            print(self.turn)
-
+            if (self.loop_mode):
+                self.endit = True
 
 class PlayerState(State):
     def __init__(self, board=None, turn=BLUE, hop=False, color=BLUE):
@@ -79,15 +80,12 @@ class Action:
     def perform(self, state):
         if self.current_pos is None:
            state.end_turn()
-            # board.repr_matrix()
-            # print(self._generate_all_possible_moves(board))
-        # print(current_pos, final_pos, board.location(current_pos[0], current_pos[1]).occupant)
         if state.hop == False:
             if state.board.location(self.final_pos[0], self.final_pos[1]).occupant != None and\
                     state.board.location(self.final_pos[0], self.final_pos[1]).occupant.color == state.turn:
                 self.current_pos = self.final_pos
 
-            elif self.current_pos != None and final_pos in state.board.legal_moves(self.current_pos[0], self.current_pos[1]):
+            elif self.current_pos != None and self.final_pos in state.board.legal_moves(self.current_pos[0], self.current_pos[1]):
 
                 state.board.move_piece(
                     self.current_pos[0], self.current_pos[1], self.final_pos[0], self.final_pos[1])
@@ -100,11 +98,11 @@ class Action:
                     self.current_pos = self.final_pos
                     self.final_pos = state.board.legal_moves(
                         self.current_pos[0], self.current_pos[1], True)
-                    if final_pos != []:
+                    if self.final_pos != []:
                         # print("HOP in Action", current_pos, final_pos)
-                        self.performAction(self.current_pos, self.final_pos[0], state)
-                    self.state.end_turn()
-            state.turn = RED if state.turn == BLUE else BLUE
+                        self.final_pos = self.final_pos[0]
+                        self.perform(state)
+                    state.end_turn()
         else:
             if self.current_pos != None and self.final_pos in state.board.legal_moves(self.current_pos[0], self.current_pos[1], state.hop):
                 state.board.move_piece(
@@ -120,5 +118,8 @@ class Action:
                     self.current_pos[0], self.current_pos[1], True)
                 if self.final_pos != []:
                     # print("HOP in Action", current_pos, final_pos)
-                    self.performAction(self.current_pos, self.final_pos[0], state)
+                    self.final_pos = self.final_pos[0]
+                    self.perform(state)
                 state.end_turn()
+        if not state.hop:
+            state.turn = RED if state.turn == BLUE else BLUE
