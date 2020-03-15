@@ -35,16 +35,16 @@ class AgressiveAgent(BasePlayer):
                     occupant = board.location(i, j).occupant
                     if (occupant is not None):
                         if occupant.color == self.eval_color:
-                            score += 5 + j + 2 * (occupant.king)
+                            score += 5 + j + 5 * (occupant.king)
                         else:
-                            score -= 5 + (8 - j) + 2 * (occupant.king)
+                            score -= 20 + (8 - j) + 2 * (occupant.king)
         else:
             for i in range(8):
                 for j in range(8):
                     occupant = board.location(i, j).occupant
                     if (occupant is not None):
                         if occupant.color == self.eval_color:
-                            score += 5 + (8 - j) + 2 * (occupant.king)
+                            score += 5 + (8 - j) + 5 * (occupant.king)
                         else:
-                            score -= 5 + j + 2 * (occupant.king)
+                            score -= 20 + j + 2 * (occupant.king)
         return score
