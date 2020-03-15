@@ -1,10 +1,12 @@
 import sys
 from config import *
 from .base import BasePlayer
+from copy import deepcopy
 
 class ControllingAgent(BasePlayer):
     def __init__(self, game, color):
         BasePlayer.__init__(self, game, color)
+        self.eval_color = color
 
     def step(self, state, return_count_nodes=False):
         return self.policy(state)
@@ -13,7 +15,8 @@ class ControllingAgent(BasePlayer):
         bestFound = None
         bestFoundValue = -sys.maxsize - 1
         for action in state.getPossibleActions():
-            new_state = state.takeAction(action)
+            copy_action = deepcopy(action)
+            new_state = state.takeAction(copy_action)
             currentValue = self.evaluate(new_state.board)
             if currentValue > bestFoundValue:
                 bestFound = action

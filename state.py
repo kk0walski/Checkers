@@ -126,8 +126,9 @@ class Action:
 
     def __str__(self):
         reasult = ""
-        reasult += "curent_pos: ( " + self.current_pos[0] + ", " + self.current_pos[1] + " ) \n"
-        reasult += "final pos: ( " + self.final_pos[0] + ", " + self.final_pos[1] + " ) \n"
+        reasult += "curent_pos: " + str(self.current_pos) + "  \n"
+        reasult += "final pos: " + str(self.final_pos) + " \n"
+        return reasult
 
     def __repr__(self):
         return {'current_pos': self.current_pos, 'final_pos': self.final_pos}
