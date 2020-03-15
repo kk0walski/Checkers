@@ -58,7 +58,7 @@ class State:
                 print('RED WINS!')
             else:
                 print('BLUE WINS!')
-            if (self.loop_mode):
+            if self.loop_mode:
                 self.endit = True
 
 class PlayerState(State):
