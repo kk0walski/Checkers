@@ -2,7 +2,6 @@ import random
 
 from .base import BasePlayer
 
-
 class RandomAgent(BasePlayer):
     def __init__(self, game, color):
         BasePlayer.__init__(self, game, color)

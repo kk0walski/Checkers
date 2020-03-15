@@ -123,3 +123,11 @@ class Action:
                 state.end_turn()
         if not state.hop:
             state.turn = RED if state.turn == BLUE else BLUE
+
+    def __str__(self):
+        reasult = ""
+        reasult += "curent_pos: ( " + self.current_pos[0] + ", " + self.current_pos[1] + " ) \n"
+        reasult += "final pos: ( " + self.final_pos[0] + ", " + self.final_pos[1] + " ) \n"
+
+    def __repr__(self):
+        return {'current_pos': self.current_pos, 'final_pos': self.final_pos}
