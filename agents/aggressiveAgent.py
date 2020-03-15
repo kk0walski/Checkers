@@ -15,8 +15,7 @@ class AgressiveAgent(BasePlayer):
         bestFound = None
         bestFoundValue = -sys.maxsize - 1
         for action in state.getPossibleActions():
-            copy_action = deepcopy(action)
-            new_state = state.takeAction(copy_action)
+            new_state = state.takeAction(action)
             currentValue = self.evaluate(new_state.board)
             if currentValue > bestFoundValue:
                 bestFound = action
