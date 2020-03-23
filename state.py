@@ -1,3 +1,4 @@
+from abc import ABC, abstractmethod
 from board import Board
 from config import BLUE, RED, BLACK
 from action import Action
@@ -31,7 +32,6 @@ class State:
         return newState
 
 
-
     def isTerminal(self):
         for x in range(8):
             for y in range(8):
@@ -55,20 +55,46 @@ class State:
 
         self.hop = False
         if self.isTerminal():
-            if self.turn == BLUE:
-                print('RED WINS!')
-            else:
-                print('BLUE WINS!')
+            # if self.turn == BLUE:
+            #     print('RED WINS!')
+            # else:
+            #     print('BLUE WINS!')
             if self.loop_mode:
                 self.endit = True
 
-class PlayerState(State):
-    def __init__(self, board=None, turn=BLUE, hop=False, color=BLUE):
-        super.__init__(board, turn, hop)
+class PlayerState(ABC):
+    def __init__(self, state, color, initialState=None):
         self.color = color
+        self.state = state
+        if not initialState:
+            self.initialState = deepcopy(state)
+        else:
+            self.initialState = initialState
+
+    def getPossibleActions(self):
+        """
+        :rtype: object
+        """
+        return self.state.getPossibleActions()
+
+
+    @abstractmethod
+    def takeAction(self, action):
+        pass
+
+class MCTSState(PlayerState):
+
+    def __init__(self, state, color, initialState=None):
+        super(MCTSState, self).__init__(state, color, initialState)
+
+    def isTerminal(self):
+        return self.state.isTerminal()
+
+    def takeAction(self, action):
+        return MCTSState(self.state.takeAction(action), self.color, self.initialState)
 
     def getReward(self):
-        if self.turn == self.color:
+        if self.state.turn == self.color:
             return 1
         else:
             return -1
